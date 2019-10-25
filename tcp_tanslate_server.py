@@ -203,5 +203,5 @@ def main():
     for i in jobs:
         i.join()
 
-
+#如果是windows用户 运行main时候一定要加if __name__ == '__main__',因为windows操作进程有保护机制.防止递归创建进程
 main()
