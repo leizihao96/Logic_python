@@ -182,14 +182,15 @@ def main():
     s.bind(U)
     s.listen(8)
 
-    # 采用多进程防止僵尸进程
+    # 采用多进程防止僵尸进程如果windos用户建议写一个类似这signal.signal(signal.SIGCHLD, signal.SIG_IGN)逻辑的装饰器
+
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)
     jobs = []
 
     #循环接受客户端请求,通过Database创建不同的实例，进行操作
     while True:
         try:
-            target = Database()
+            target = Database()#在windows下面进程间无法传递父进成创建的实例,会报错pickle序列化的错误,建议创建实例的时候写在请求函数内部！
             c, addr = s.accept()
             print('connet from...', addr)
             p1 = multiprocessing.Process(target=quest_target, args=(target, c, addr))
